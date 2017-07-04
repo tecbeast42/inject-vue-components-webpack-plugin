@@ -20,7 +20,11 @@
     "url": "https://github.com/tecbeast42/vue-components-autodetect-webpack/issues"
   },
   "homepage": "https://github.com/tecbeast42/vue-components-autodetect-webpack#readme",
+  "peerDependencies": {
+    "webpack": "^2.0.0 || ^3.0.0",
+    "vue": "^2.0.0"
+  },
   "dependencies": {
-    "loader-utils": "^1.1.0"
+    "loader-utils": "^1.0.0"
   }
 }
