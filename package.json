@@ -1,6 +1,6 @@
 {
   "name": "vue-components-autodetect-webpack",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Inject Vue components to js file based on folder structure",
   "repository": {
     "type": "git",
