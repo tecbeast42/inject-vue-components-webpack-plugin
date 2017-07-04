@@ -3,9 +3,9 @@
 [![npm](https://img.shields.io/npm/dt/vue-components-autodetect-webpack.svg)](https://www.npmjs.com/package/vue-components-autodetect-webpack)
 
 
-# Inject Vue components Webpack plugin
+# Vue components Webpack plugin
 
-Inject Vue components to js file based on folder structure.
+Inject Vue components into your webpack bundle based on folder structure and filename. So you save a file to edit for every new component.
 
 ```
 index.vue -> <index></index>
@@ -14,15 +14,19 @@ post/button/delete.vue -> <post-button-delete></post-button-delete>
 folder/folder/file.vue -> <folder-folder-file></folder-folder-file>
 ```
 
-## Installation
-
-```
-npm install --save vue-components-autodetect-webpack
-yarn add vue-components-autodetect-webpack
-```
-
 ## Usage
 
+### In your JS file
+
+this comment gets expanded into Vue Component list
+```
+// inject-vue-components
+```
+
+so it will look like this
+```
+Vue.component('folder-file', require('folder/file.vue'));
+```
 ### Configuration
 
 |Name|Type|Description|
@@ -52,15 +56,10 @@ module: {
 }
 ```
 
-### In the JS file
-
-In the entry file:
-```
-// inject-vue-components
-```
-
-gets transformed to
+## Installation
 
 ```
-Vue.component('folder-file', require('folder/file.vue'));
+npm install --save vue-components-autodetect-webpack
+yarn add vue-components-autodetect-webpack
 ```
+
