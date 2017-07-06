@@ -10,7 +10,7 @@ module.exports = function(source) {
 function getConfig (space) {
     return Object.assign(
         {
-            folder: 'resources/assets/vue',
+            path: 'resources/assets/vue',
             separator: '-'
         },
         loaderUtils.getOptions(space)
@@ -29,9 +29,9 @@ function inject (source, config, context) {
 }
 
 function getInjectString (config, context) {
-    var files = fs.readdirSync(config.folder);
+    var files = fs.readdirSync(config.path);
     var components = [];
-    var currentFolder = config.folder;
+    var currentFolder = config.path;
     // Traverse all folders and files to get the components
     files.forEach(traverse);
 
@@ -42,8 +42,8 @@ function getInjectString (config, context) {
 
         if (file.isFile()) {
             // Get the component name and path if its a file
-            var length = config.folder.length;
-            if (!config.folder.endsWith('/')) {
+            var length = config.path.length;
+            if (!config.path.endsWith('/')) {
                 length++;
             }
             var componentName = currentPath.substr(length);
