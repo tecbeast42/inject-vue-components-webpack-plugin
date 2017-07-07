@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/dt/vue-components-autodetect-webpack.svg)](https://www.npmjs.com/package/vue-components-autodetect-webpack)
 
 
-# Vue components Webpack plugin
+# Vue components autodetect Webpack loader
 
 Inject Vue components into your webpack bundle based on folder structure and filename. So you save a file to edit for every new component.
 
@@ -31,7 +31,7 @@ Vue.component('folder-file', require('folder/file.vue'));
 
 |Name|Type|Description|
 |:--:|:--:|:----------|
-|**`folder`**|`{String}`|The folder where your vue components are|
+|**`path`**|`{String}`|The path to the folder where your vue components are|
 |**`separator`**|`{String}`|The separator in the Vue component name|
 
 ### In Webpack
@@ -45,7 +45,7 @@ module: {
                 {
                     loader: 'vue-components-autodetect-webpack',
                     options: {
-                        folder: 'resources/assets/vue',
+                        path: 'resources/assets/vue',
                         separator: '-',
                     }
                 },
