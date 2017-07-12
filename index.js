@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const loaderUtils = require('loader-utils');
-const regex = /(\/\/\s*inject-vue-components\n?)/ig;
 
 module.exports = function(source) {
     return inject(source, getConfig(this), this.context);
@@ -11,19 +10,25 @@ function getConfig (space) {
     return Object.assign(
         {
             path: 'resources/assets/vue',
-            separator: '-'
+            separator: '-',
+            injectComment: /(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig,
+            exclude: []
         },
         loaderUtils.getOptions(space)
     );
 }
 
 function inject (source, config, context) {
-    const injectString = getInjectString(config, context);
+    const injectionPoints = getInjectionPoints(source, config.injectComment);
 
-    const injectionPoints = getInjectionPoints(source, regex);
-    injectionPoints.forEach(function (point) {
-        source = source.replace(point[1], injectString);
-    });
+    // Only get and replace if there is an injection point
+    if (injectionPoints.length > 0) {
+        const injectString = getInjectString(config, context);
+
+        injectionPoints.forEach(function (point) {
+            source = source.replace(point[1], injectString);
+        });
+    }
 
     return source;
 }
@@ -32,6 +37,7 @@ function getInjectString (config, context) {
     var files = fs.readdirSync(config.path);
     var components = [];
     var currentFolder = config.path;
+
     // Traverse all folders and files to get the components
     files.forEach(traverse);
 
@@ -39,14 +45,18 @@ function getInjectString (config, context) {
         var folderAbove = currentFolder;
         var currentPath = path.join(currentFolder, filePath);
         var file = fs.statSync(currentPath);
+        var relativePath = path.relative(config.path, currentPath);
+
+        // Loop all the paths to exclude and see if we should skip the current one
+        for (let excludePath of config.exclude) {
+            if (excludePath === relativePath) {
+                return;
+            }
+        }
 
         if (file.isFile()) {
             // Get the component name and path if its a file
-            var length = config.path.length;
-            if (!config.path.endsWith('/')) {
-                length++;
-            }
-            var componentName = currentPath.substr(length);
+            var componentName = relativePath;
             componentName = componentName.replace(/\//g, config.separator);
             componentName = componentName.replace('.vue', '');
             components.push({ name: componentName, path: path.relative(context, currentPath) });
@@ -69,6 +79,10 @@ function getInjectString (config, context) {
 }
 
 function getInjectionPoints (data, regexp) {
+    if (typeof regexp === 'string') {
+        regexp = new RegExp("(\\/\\/\\s*" + regexp + "\\n?)", "ig");
+    }
+
     var injectionPoints = [];
     data.replace(regexp, function () {
         var arr = Array.prototype.slice.call(arguments);
