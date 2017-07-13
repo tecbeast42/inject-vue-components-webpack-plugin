@@ -20,7 +20,7 @@ folder/folder/file.vue -> <folder-folder-file></folder-folder-file>
 
 this comment gets expanded into Vue Component list
 ```
-// inject-vue-components
+// {{ inject-vue-components }}
 ```
 
 so it will look like this
@@ -29,10 +29,12 @@ Vue.component('folder-file', require('folder/file.vue'));
 ```
 ### Configuration
 
-|Name|Type|Description|
-|:--:|:--:|:----------|
-|**`path`**|`{String}`|The path to the folder where your vue components are|
-|**`separator`**|`{String}`|The separator in the Vue component name|
+|Name|Type|Description|Default|
+|:--:|:--:|:----------|:----------|
+|**`path`**|`{String}`|The path to the folder where your vue components are|'resources/assets/vue'|
+|**`separator`**|`{String}`|The separator in the Vue component name|'-'|
+|**`injectComment`**|`{StringǀRegex}`|The comment where the components will be injected (string adds // before)|/(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig|
+|**`exclude`**|`{Array}`|An array of paths/files to exclude, using path as base|[]|
 
 ### In Webpack
 
@@ -47,6 +49,8 @@ module: {
                     options: {
                         path: 'resources/assets/vue',
                         separator: '-',
+                        injectComment: /(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig,
+                        exclude: ['page']
                     }
                 },
                 // ... other loaders
