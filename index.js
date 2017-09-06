@@ -12,7 +12,8 @@ function getConfig (space) {
             path: 'resources/assets/vue',
             separator: '-',
             injectComment: /(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig,
-            exclude: []
+            exclude: [],
+            type: 'require',
         },
         loaderUtils.getOptions(space)
     );
@@ -72,7 +73,11 @@ function getInjectString (config, context) {
 
     var injectString = '';
     components.forEach(function (component, index) {
-        injectString += "Vue.component('" + component.name + "', require('" + component.path +"'));\n";
+        if (config.type === 'import') {
+            injectString += "import vuecomp" + index + " from '" + component.path + "'; \nVue.component('" + component.name + "', vuecomp" + index + ");\n";
+        } else {
+            injectString += "Vue.component('" + component.name + "', require('" + component.path +"'));\n";
+        }
     });
 
     return injectString;

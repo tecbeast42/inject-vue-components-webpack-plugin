@@ -27,6 +27,12 @@ so it will look like this
 ```
 Vue.component('folder-file', require('folder/file.vue'));
 ```
+
+or if you are using import
+```
+import vuecomp0 from 'folder/file.vue';
+Vue.component('folder-file', vuecomp0);
+```
 ### Configuration
 
 |Name|Type|Description|Default|
@@ -35,6 +41,7 @@ Vue.component('folder-file', require('folder/file.vue'));
 |**`separator`**|`{String}`|The separator in the Vue component name|'-'|
 |**`injectComment`**|`{StringǀRegex}`|The comment where the components will be injected (string adds // before)|/(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig|
 |**`exclude`**|`{Array}`|An array of paths/files to exclude, using path as base|[]|
+|**`type`**|`{String}`|The type of loading that should be used (require or import)|'require'|
 
 ### In Webpack
 
@@ -44,13 +51,15 @@ module: {
         {
             test: /\.js$/,
             use: [
+                // ... other loaders
                 {
                     loader: 'vue-components-autodetect-webpack',
                     options: {
                         path: 'resources/assets/vue',
                         separator: '-',
                         injectComment: /(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig,
-                        exclude: ['page']
+                        exclude: ['page'],
+                        type: 'require'
                     }
                 },
                 // ... other loaders
