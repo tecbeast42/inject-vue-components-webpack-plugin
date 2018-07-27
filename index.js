@@ -14,6 +14,7 @@ function getConfig (space) {
             injectComment: /(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig,
             exclude: [],
             type: 'require',
+            useAt: false
         },
         loaderUtils.getOptions(space)
     );
@@ -72,9 +73,10 @@ function getInjectString (config, context) {
     }
 
     var injectString = '';
+    var at = config.useAt ? '@/' : '';
     components.forEach(function (component, index) {
         if (config.type === 'import') {
-            injectString += "import vuecomp" + index + " from '" + component.path + "'; \nVue.component('" + component.name + "', vuecomp" + index + ");\n";
+            injectString += "import vuecomp" + index + " from '" + at + component.path + "'; \nVue.component('" + component.name + "', vuecomp" + index + ");\n";
         } else {
             injectString += "Vue.component('" + component.name + "', require('" + component.path +"'));\n";
         }

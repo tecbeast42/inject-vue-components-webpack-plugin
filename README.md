@@ -42,6 +42,7 @@ Vue.component('folder-file', vuecomp0);
 |**`injectComment`**|`{StringǀRegex}`|The comment where the components will be injected (string adds // before)|/(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig|
 |**`exclude`**|`{Array}`|An array of paths/files to exclude, using path as base|[]|
 |**`type`**|`{String}`|The type of loading that should be used (require or import)|'require'|
+|**`useAt`**|`{Boolean}`|If @ should be used for import path|false|
 
 ### In Webpack
 
@@ -59,7 +60,8 @@ module: {
                         separator: '-',
                         injectComment: /(\/\/\s*{{\s*inject-vue-components\s*}}\n?)/ig,
                         exclude: ['page'],
-                        type: 'require'
+                        type: 'require',
+                        useAt: false
                     }
                 },
                 // ... other loaders
